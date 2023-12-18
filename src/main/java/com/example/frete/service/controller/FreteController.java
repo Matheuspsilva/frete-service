@@ -2,21 +2,32 @@ package com.example.frete.service.controller;
 
 import com.example.frete.service.exception.MotoristaNotFoundException;
 import com.example.frete.service.model.Frete;
+import com.example.frete.service.model.Motorista;
 import com.example.frete.service.payload.response.FreteResponsePayload;
 import com.example.frete.service.service.FreteService;
 import com.example.frete.service.service.MotoristaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Controller
 public class FreteController {
+    private static final Logger log = LoggerFactory.getLogger(MotoristaService.class);
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private FreteService freteService;
@@ -32,11 +43,28 @@ public class FreteController {
     @GetMapping("/fretes/{id}")
     public ResponseEntity<FreteResponsePayload> get(@PathVariable Long id) {
         Frete frete = freteService.get(id);
-        // Buscar motorista em motorista-service
+
+        // Criação do cabeçalho HTTP com serviceName
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("serviceName", "frete-service");
+
+        // Criação de HttpEntity para incluir cabeçalhos
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+
+        // Buscar motorista em motorista-service com os cabeçalhos
+        // ResponseEntity<Motorista> motorista = restTemplate.getForEntity("http://localhost:8081/motoristas/" + frete.getIdMotorista(), Motorista.class);
+        ResponseEntity<Motorista> motorista = restTemplate.exchange(
+                "http://localhost:8081/motoristas/" + frete.getIdMotorista(),
+                HttpMethod.GET,
+                entity,
+                Motorista.class);
+
+        // Criar payload de resposta
         FreteResponsePayload freteResponsePayload = new FreteResponsePayload();
         freteResponsePayload.setOrigem(frete.getOrigem());
         freteResponsePayload.setDestino(frete.getDestino());
-        freteResponsePayload.setMotorista(motoristaService.get(frete.getIdMotorista()));
+        freteResponsePayload.setMotorista(motorista.getBody());
 
         return ResponseEntity.ok(freteResponsePayload);
     }
