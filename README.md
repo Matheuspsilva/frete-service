@@ -17,6 +17,10 @@ O `frete-service` é um microserviço Spring Boot desenvolvido para gerenciar se
 
 ## Instalação e Execução
 1. Clone o repositório:
+    
+```bash
+git clone https://github.com/Matheuspsilva/frete-service.git
+```
 
 2. Navegue até a pasta do projeto e execute:
 
@@ -26,9 +30,9 @@ mvn clean install
 
 3. Para iniciar a aplicação, execute:
     
-    ```bash
-    mvn spring-boot:run
-    ```
+```bash
+mvn spring-boot:run
+```
 
 ## Swagger UI
 A documentação da API REST está disponível através do Swagger UI. Após iniciar a aplicação, acesse `http://localhost:8082/swagger-ui.html` para visualizar e interagir com os endpoints da API.
