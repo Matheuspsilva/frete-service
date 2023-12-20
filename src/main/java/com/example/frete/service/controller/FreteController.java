@@ -14,15 +14,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Controller
+@RequestMapping("/fretes")
+@RestController
 public class FreteController {
     private static final Logger log = LoggerFactory.getLogger(MotoristaService.class);
 
@@ -40,7 +38,7 @@ public class FreteController {
 //        return ResponseEntity.ok(freteService.getAll());
 //    }
 
-    @GetMapping("/fretes/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FreteResponsePayload> get(@PathVariable Long id) {
         Frete frete = freteService.get(id);
 
@@ -69,7 +67,7 @@ public class FreteController {
         return ResponseEntity.ok(freteResponsePayload);
     }
 
-    @PostMapping("/fretes")
+    @PostMapping("")
     public ResponseEntity<?> create(@RequestBody Frete frete) {
         try {
             return ResponseEntity.ok(freteService.create(frete));
