@@ -53,7 +53,7 @@ public class FreteController {
         // Buscar motorista em motorista-service com os cabeçalhos
         // ResponseEntity<Motorista> motorista = restTemplate.getForEntity("http://localhost:8081/motoristas/" + frete.getIdMotorista(), Motorista.class);
         ResponseEntity<Motorista> motorista = restTemplate.exchange(
-                "http://localhost:8081/motoristas/" + frete.getIdMotorista(),
+                "http://motorista-service:8081/motoristas/" + frete.getIdMotorista(),
                 HttpMethod.GET,
                 entity,
                 Motorista.class);

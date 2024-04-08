@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 public class MotoristaService {
 
     private final RestTemplate restTemplate;
-    private final String motoristaServiceUrl = "http://localhost:8081/motoristas";
+    private final String motoristaServiceUrl = "http://motorista-service:8081/motoristas";
 
     public MotoristaService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
